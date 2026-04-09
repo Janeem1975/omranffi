@@ -13,11 +13,13 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+        # قمنا بإزالة سطر الكاش من هنا لتجنب سيرفراتهم المعطلة
         
     - name: Setup Official Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: '8.7' # تحميل محرك نظيف لتجاوز الملف التالف
+        gradle-version: '8.7'
+        cache-disabled: true # هذا هو الأمر السحري لتجاوز العطل
 
     - name: Build Application
       run: |
@@ -26,7 +28,7 @@ jobs:
         echo "Building in: $PROJECT_DIR"
         cd "$PROJECT_DIR"
         
-        # استخدام المحرك الجديد لبناء التطبيق
+        # استخدام المحرك لبناء التطبيق
         gradle assembleDebug
         
     - name: Upload APK
