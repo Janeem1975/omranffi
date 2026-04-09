@@ -13,22 +13,24 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
         
-    - name: Find gradlew and Build
+    - name: Setup Official Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: '8.7' # تحميل محرك نظيف لتجاوز الملف التالف
+
+    - name: Build Application
       run: |
-        # هذا الأمر يبحث عن مكان مجلد المشروع ويدخل إليه تلقائياً
-        PROJECT_DIR=$(dirname $(find . -name "gradlew" | head -n 1))
-        echo "Found gradlew in: $PROJECT_DIR"
+        # البحث عن مجلد المشروع الأساسي والدخول إليه
+        PROJECT_DIR=$(dirname $(find . -name "build.gradle.kts" | head -n 1))
+        echo "Building in: $PROJECT_DIR"
         cd "$PROJECT_DIR"
         
-        # إعطاء الصلاحية وبناء التطبيق
-        chmod +x gradlew
-        ./gradlew assembleDebug
+        # استخدام المحرك الجديد لبناء التطبيق
+        gradle assembleDebug
         
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: app-debug
-        # النجمتين ** تعني أنه سيبحث عن الـ APK في أي مجلد فرعي ويجلبه
         path: '**/app/build/outputs/apk/debug/app-debug.apk'
