@@ -13,13 +13,12 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        # قمنا بإزالة سطر الكاش من هنا لتجنب سيرفراتهم المعطلة
         
     - name: Setup Official Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: '8.7'
-        cache-disabled: true # هذا هو الأمر السحري لتجاوز العطل
+        gradle-version: '8.9' # تم التحديث إلى الإصدار المطلوب 8.9
+        cache-disabled: true
 
     - name: Build Application
       run: |
